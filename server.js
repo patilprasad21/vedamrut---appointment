@@ -7,14 +7,15 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // serve static files from current folder (dist)
 app.use(express.static("public"));
 
 // homepage route
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, public, "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // MongoDB connect
@@ -134,7 +135,7 @@ app.post("/book", async (req, res) => {
 
     res.redirect("/success.html");
   } catch (error) {
-    console.log(error);
+    console.error("BOOKING ERROR:", error);
     res.send("Error saving appointment");
   }
 });
