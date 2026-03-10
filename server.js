@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 const app = express();
 
@@ -13,14 +14,12 @@ app.use(express.static("public"));
 
 // homepage route
 app.get("/", (req, res) => {
-  res.sendFile(path.join(public, "index.html"));
+  res.sendFile(path.join(__dirname, public, "index.html"));
 });
 
 // MongoDB connect
 mongoose
-  .connect(
-    "mongodb+srv://vedamrut:Rahul1234@cluster0.yupeapi.mongodb.net/vedamrutDB?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
@@ -28,6 +27,7 @@ mongoose
 const appointmentSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
+  email: String,
   mobile: String,
   disease: String,
   address: String,
@@ -78,7 +78,16 @@ app.post("/book", async (req, res) => {
     }
 
     // Save appointment
-    const newAppointment = new Appointment(req.body);
+    const newAppointment = new Appointment({
+      firstName,
+      lastName,
+      email,
+      mobile,
+      disease,
+      address,
+      date,
+      slot,
+    });
     await newAppointment.save();
 
     // EMAIL SETUP
