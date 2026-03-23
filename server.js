@@ -136,7 +136,7 @@ app.post("/book", async (req, res) => {
     res.redirect("/success.html");
   } catch (error) {
     console.error("BOOKING ERROR:", error);
-    res.send("Error saving appointment");
+    res.status(500).send(error.message);
   }
 });
 
