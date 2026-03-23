@@ -151,7 +151,9 @@ const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI, {
+      family: 4, // force IPv4
+    });
     console.log("MongoDB Connected ✅");
 
     app.listen(PORT, () => {
