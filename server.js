@@ -10,9 +10,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// serve static files from current folder (dist)
-app.use(express.static("public"));
-
 // homepage route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
@@ -139,6 +136,9 @@ app.post("/book", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+// serve static files from current folder (dist)
+app.use(express.static("public"));
 
 // start server
 // const PORT = process.env.PORT || 3000;
